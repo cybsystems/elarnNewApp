@@ -14,16 +14,16 @@ export default class TourPage extends Component {
       statusBarColor: tourStyles[slides[index].style].backgroundColor,
     });
   };
-
+  onDone = () => updateRawData({showNextPage: true});
   render() {
     return (
       <View style={tourStyles.mainContent}>
         <AppIntroSlider
           showPrevButton
-          showSkipButton
           renderItem={this.renderItem}
           slides={slides}
           onSlideChange={this.onSlideChange}
+          onDone={this.onDone}
         />
       </View>
     );

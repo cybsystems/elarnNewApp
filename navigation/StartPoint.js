@@ -4,7 +4,7 @@ import TourPage from '../pages/TourPage';
 import {connect} from 'react-redux';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
-const StartPointImpl = ({statusBarColor}) => (
+const StartPointImpl = ({statusBarColor, showNextPage}) => (
   <>
     <StatusBar backgroundColor={statusBarColor} />
     <View style={styles.scrollView}>
@@ -56,8 +56,8 @@ const styles = StyleSheet.create({
 });
 
 const StartPoint = connect(state => {
-  const {statusBarColor} = state.rawData;
-  return {statusBarColor};
+  const {statusBarColor, showNextPage} = state.rawData;
+  return {statusBarColor, showNextPage};
 })(StartPointImpl);
 
 export default StartPoint;
