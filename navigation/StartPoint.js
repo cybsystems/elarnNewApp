@@ -3,12 +3,13 @@ import {View, StatusBar, StyleSheet} from 'react-native';
 import TourPage from '../pages/TourPage';
 import {connect} from 'react-redux';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+import LoginPage from '../pages/LoginPage';
 
 const StartPointImpl = ({statusBarColor, showNextPage}) => (
   <>
     <StatusBar backgroundColor={statusBarColor} />
     <View style={styles.scrollView}>
-      <TourPage />
+      {!showNextPage ? <TourPage /> : <LoginPage />}
     </View>
   </>
 );
