@@ -1,0 +1,1 @@
+export const UPDATE_RAW_DATA = 'UPDATE_RAW_DATA';
