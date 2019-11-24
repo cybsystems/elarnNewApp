@@ -6,6 +6,9 @@ import TourSlide from '../components/TourSlide';
 import {updateRawData} from '../redux/actions';
 
 export default class TourPage extends Component {
+  componentDidMount() {
+    updateRawData({statusBarColor: '#f64c73'});
+  }
   renderItem = item => {
     return <TourSlide item={item} styles={tourStyles} />;
   };
@@ -14,7 +17,9 @@ export default class TourPage extends Component {
       statusBarColor: tourStyles[slides[index].style].backgroundColor,
     });
   };
-  onDone = () => updateRawData({showNextPage: true});
+  onDone = () => {
+    this.props.navigation.navigate('Login');
+  };
   render() {
     return (
       <View style={tourStyles.mainContent}>

@@ -5,8 +5,10 @@ import {createStackNavigator} from 'react-navigation-stack';
 import LoginPage from '../pages/LoginPage';
 import SignUpPage from '../pages/SignUpPage';
 import {slideScreen} from '../animations/slideScreen';
+import TourPage from '../pages/TourPage';
 const Routes = createStackNavigator(
   {
+    Tour: {screen: TourPage},
     Login: {
       screen: LoginPage,
     },
@@ -15,7 +17,7 @@ const Routes = createStackNavigator(
     },
   },
   {
-    initialRouteName: 'Login',
+    initialRouteName: 'Tour',
     transitionConfig: slideScreen,
     headerMode: 'none',
   },

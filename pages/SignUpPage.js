@@ -8,6 +8,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import {updateRawData} from '../redux/actions';
+import {loginStyles} from './styles/loginStyles';
 
 export default class SignUpPage extends Component {
   state = {
@@ -40,8 +41,9 @@ export default class SignUpPage extends Component {
     this.backHandler.remove();
   }
   render() {
+    const styles = loginStyles;
     return (
-      <View style={styles.container}>
+      <View style={{...styles.container, backgroundColor: '#01579B'}}>
         <TextInput
           value={this.state.username}
           onChangeText={username => this.setState({username})}
@@ -108,29 +110,3 @@ export default class SignUpPage extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  button: {
-    alignItems: 'center',
-    backgroundColor: '#f64c73',
-    padding: 12,
-    color: 'white',
-    width: '80%',
-  },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    backgroundColor: '#01579B',
-  },
-  input: {
-    width: '80%',
-    height: 60,
-    paddingLeft: 10,
-    color: 'white',
-    borderWidth: 1,
-    borderColor: 'white',
-    marginBottom: 20,
-  },
-});

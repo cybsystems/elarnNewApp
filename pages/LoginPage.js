@@ -7,15 +7,25 @@ import {
   TextInput,
   View,
   StyleSheet,
+  BackHandler,
 } from 'react-native';
 import {updateRawData} from '../redux/actions';
+import {loginStyles} from './styles/loginStyles';
 
 export default class LoginPage extends Component {
   state = {username: '', password: ''};
 
   componentDidMount() {
     updateRawData({statusBarColor: '#7e30b0'});
+    this.backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      this.handleBackPress,
+    );
   }
+  handleBackPress = () => {
+    BackHandler.exitApp();
+    return true;
+  };
 
   onLogin = () => {};
 
@@ -23,6 +33,7 @@ export default class LoginPage extends Component {
     this.props.navigation.navigate('SignUp');
   };
   render() {
+    const styles = loginStyles;
     return (
       <View style={styles.container}>
         <TextInput
@@ -58,29 +69,3 @@ export default class LoginPage extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  button: {
-    alignItems: 'center',
-    backgroundColor: '#f64c73',
-    padding: 12,
-    color: 'white',
-    width: '80%',
-  },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    backgroundColor: '#7e30b0',
-  },
-  input: {
-    width: '80%',
-    height: 60,
-    paddingLeft: 10,
-    color: 'white',
-    borderWidth: 1,
-    borderColor: 'white',
-    marginBottom: 20,
-  },
-});
