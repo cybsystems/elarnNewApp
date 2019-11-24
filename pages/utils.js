@@ -27,7 +27,9 @@ export const slides = [
   },
 ];
 export const tourStyles = StyleSheet.create({
-  mainContent: {},
+  mainContent: {
+    minHeight: '100%',
+  },
   image: {
     width: 320,
     height: 320,
