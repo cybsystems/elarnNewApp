@@ -6,11 +6,25 @@ import TourSlide from '../components/TourSlide';
 
 import {updateRawData} from '../redux/actions';
 import AsyncStorage from '@react-native-community/async-storage';
+import {storeData, getData} from '../storage';
 
 export default class TourPage extends Component {
-  componentDidMount() {
+  state = {hide: true};
+  componentDidMount = async () => {
+    try {
+      const value = await getData('@INTRO_SHOWN');
+
+      if (value) {
+        this.props.navigation.navigate('Login');
+        return;
+      }
+    } catch (e) {
+      // error reading value
+    }
+    this.setState({hide: false});
     updateRawData({statusBarColor: '#f64c73'});
-  }
+  };
+
   renderItem = item => {
     return <TourSlide item={item} styles={tourStyles} />;
   };
@@ -20,25 +34,24 @@ export default class TourPage extends Component {
     });
   };
   onDone = async () => {
-    try {
-      await AsyncStorage.setItem('@storage_Key', 'stored value');
-    } catch (e) {
-      // saving error
-    }
-
+    await storeData({'@INTRO_SHOWN': 'true'});
     this.props.navigation.navigate('Login');
   };
   render() {
     return (
-      <View style={tourStyles.mainContent}>
-        <AppIntroSlider
-          showPrevButton
-          renderItem={this.renderItem}
-          slides={slides}
-          onSlideChange={this.onSlideChange}
-          onDone={this.onDone}
-        />
-      </View>
+      <>
+        {!this.state.hide && (
+          <View style={tourStyles.mainContent}>
+            <AppIntroSlider
+              showPrevButton
+              renderItem={this.renderItem}
+              slides={slides}
+              onSlideChange={this.onSlideChange}
+              onDone={this.onDone}
+            />
+          </View>
+        )}
+      </>
     );
   }
 }

@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {updateRawData} from '../redux/actions';
 import {loginStyles} from './styles/loginStyles';
-import AsyncStorage from '@react-native-community/async-storage';
+import {removeData} from '../storage';
 
 export default class LoginPage extends Component {
   state = {username: '', password: ''};
@@ -29,18 +29,7 @@ export default class LoginPage extends Component {
   };
 
   onLogin = async () => {
-    try {
-      const value = await AsyncStorage.getItem('@storage_Key');
-      if (value !== null) {
-        console.warn(value);
-
-        // value previously stored
-      }
-              console.warn(value);
-
-    } catch (e) {
-      // error reading value
-    }
+    await removeData('@INTRO_SHOWN');
   };
 
   onSignUpClicked = () => {
