@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {updateRawData} from '../redux/actions';
 import {loginStyles} from './styles/loginStyles';
+import {baseUrl} from '../utils';
 
 export default class SignUpPage extends Component {
   state = {
@@ -33,13 +34,34 @@ export default class SignUpPage extends Component {
   };
   handleBackPress = () => {
     this.goBack();
-
     return true;
   };
 
   componentWillUnmount() {
     this.backHandler.remove();
   }
+  onSignUp = async () => {
+    try {
+      let formData = new FormData();
+      formData.append('email', 'John@gmail.com');
+      formData.append('username', 'John123');
+      formData.append('password', 'Pass123');
+      formData.append('classId', '123');
+
+      const res = await fetch(`${baseUrl}/addStudentInvitation.php`, {
+        body: formData,
+        method: 'post',
+      })
+        .then(res => res.json())
+        .then(res => res);
+      console.log('====================================');
+      console.log(res);
+      console.log('====================================');
+    } catch (e) {
+      console.warn(e);
+    }
+  };
+
   render() {
     const styles = loginStyles;
     return (
@@ -85,6 +107,7 @@ export default class SignUpPage extends Component {
         />
 
         <TouchableOpacity
+          onPress={this.onSignUp}
           style={{
             backgroundColor: '#00838F',
             width: '80%',
