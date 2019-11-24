@@ -3,6 +3,7 @@ import {Text, View} from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import {slides, tourStyles} from './utils';
 import TourSlide from '../components/TourSlide';
+
 import {updateRawData} from '../redux/actions';
 
 export default class TourPage extends Component {
