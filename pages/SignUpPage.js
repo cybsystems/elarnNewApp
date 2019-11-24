@@ -10,6 +10,7 @@ import {
 import {updateRawData} from '../redux/actions';
 import {loginStyles} from './styles/loginStyles';
 import {baseUrl} from '../utils';
+import {showMessage, hideMessage} from 'react-native-flash-message';
 
 export default class SignUpPage extends Component {
   state = {
@@ -40,23 +41,44 @@ export default class SignUpPage extends Component {
   componentWillUnmount() {
     this.backHandler.remove();
   }
+  isAllRight = () => {
+    const arr = ['email', 'username', 'password', 'classId'];
+    const items = Object.keys(this.state).filter(item => this.state[item]);
+    return items.length === arr.length;
+  };
+
   onSignUp = async () => {
     try {
-      let formData = new FormData();
-      formData.append('email', 'John@gmail.com');
-      formData.append('username', 'John123');
-      formData.append('password', 'Pass123');
-      formData.append('classId', '123');
+      if (this.isAllRight()) {
+        const {email, username, password, classId} = this.state;
+        let formData = new FormData();
+        formData.append('email', email);
+        formData.append('username', username);
+        formData.append('password', password);
+        formData.append('classId', classId);
 
-      const res = await fetch(`${baseUrl}/addStudentInvitation.php`, {
-        body: formData,
-        method: 'post',
-      })
-        .then(res => res.json())
-        .then(res => res);
-      console.log('====================================');
-      console.log(res);
-      console.log('====================================');
+        const res = await fetch(`${baseUrl}/addStudentInvitation.php`, {
+          body: formData,
+          method: 'post',
+        })
+          .then(res => res.json())
+          .then(res => res);
+        if (res && res.res === 'Y') {
+          this.setState({
+            email: '',
+            username: '',
+            password: '',
+            cpassword: '',
+            classId: '',
+          });
+
+          showMessage({
+            message: 'Invitation Sent',
+            type: 'success',
+          });
+          this.goBack();
+        }
+      }
     } catch (e) {
       console.warn(e);
     }
