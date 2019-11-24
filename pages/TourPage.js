@@ -5,6 +5,7 @@ import {slides, tourStyles} from './utils';
 import TourSlide from '../components/TourSlide';
 
 import {updateRawData} from '../redux/actions';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default class TourPage extends Component {
   componentDidMount() {
@@ -18,7 +19,13 @@ export default class TourPage extends Component {
       statusBarColor: tourStyles[slides[index].style].backgroundColor,
     });
   };
-  onDone = () => {
+  onDone = async () => {
+    try {
+      await AsyncStorage.setItem('@storage_Key', 'stored value');
+    } catch (e) {
+      // saving error
+    }
+
     this.props.navigation.navigate('Login');
   };
   render() {

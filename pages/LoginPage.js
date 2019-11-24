@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import {updateRawData} from '../redux/actions';
 import {loginStyles} from './styles/loginStyles';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default class LoginPage extends Component {
   state = {username: '', password: ''};
@@ -27,7 +28,20 @@ export default class LoginPage extends Component {
     return true;
   };
 
-  onLogin = () => {};
+  onLogin = async () => {
+    try {
+      const value = await AsyncStorage.getItem('@storage_Key');
+      if (value !== null) {
+        console.warn(value);
+
+        // value previously stored
+      }
+              console.warn(value);
+
+    } catch (e) {
+      // error reading value
+    }
+  };
 
   onSignUpClicked = () => {
     this.props.navigation.navigate('SignUp');
@@ -51,7 +65,7 @@ export default class LoginPage extends Component {
           style={styles.input}
           placeholderTextColor="white"
         />
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity onPress={this.onLogin} style={styles.button}>
           <Text style={{color: 'white', fontSize: 16}}> Login </Text>
         </TouchableOpacity>
         <TouchableOpacity
