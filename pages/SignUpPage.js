@@ -1,25 +1,19 @@
 import React, {Component} from 'react';
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  TextInput,
-  BackHandler,
-  StyleSheet,
-} from 'react-native';
+import {TouchableOpacity, Text, View, BackHandler, Image} from 'react-native';
 import {updateRawData} from '../redux/actions';
 import {loginStyles} from './styles/loginStyles';
-import {baseUrl} from '../utils';
-import {showMessage, hideMessage} from 'react-native-flash-message';
+import Wizard from 'react-native-wizard';
+import PlainButton from '../components/PlainButton';
+import PersonalInfo from './signUpSteps/PersonalInfo';
+import CredentialsInfo from './signUpSteps/CredentialsInfo';
+import ClassInfo from './signUpSteps/ClassInfo';
 
 export default class SignUpPage extends Component {
-  state = {
-    username: '',
-    password: '',
-    email: '',
-    cpassword: '',
-    classId: '',
-  };
+  state = {currentStep: 0};
+  constructor() {
+    super();
+    this.wizard = React.createRef();
+  }
 
   componentDidMount() {
     updateRawData({statusBarColor: '#01579B'});
@@ -28,7 +22,6 @@ export default class SignUpPage extends Component {
       this.handleBackPress,
     );
   }
-
   goBack = () => {
     updateRawData({statusBarColor: '#7e30b0'});
     this.props.navigation.pop();
@@ -41,118 +34,53 @@ export default class SignUpPage extends Component {
   componentWillUnmount() {
     this.backHandler.remove();
   }
-  isAllRight = () => {
-    const arr = ['email', 'username', 'password', 'classId'];
-    const items = Object.keys(this.state).filter(item => {
-      return this.state[item] && this.state[item].length;
-    });
-    return items.length === arr.length;
-  };
 
-  onSignUp = async () => {
-    try {
-      if (this.isAllRight()) {
-        const {email, username, password, classId} = this.state;
-        let formData = new FormData();
-        formData.append('email', email);
-        formData.append('username', username);
-        formData.append('password', password);
-        formData.append('classId', classId);
-
-        const res = await fetch(`${baseUrl}/addStudentInvitation.php`, {
-          body: formData,
-          method: 'post',
-        })
-          .then(res => res.json())
-          .then(res => res);
-        if (res && res.res === 'Y') {
-          this.setState({
-            email: '',
-            username: '',
-            password: '',
-            cpassword: '',
-            classId: '',
-          });
-
-          showMessage({
-            message: 'Invitation Sent',
-            type: 'success',
-          });
-          this.goBack();
-        }
-      }
-    } catch (e) {
-      console.warn(e);
-    }
-  };
+  onSignUp = async () => {};
 
   render() {
     const styles = loginStyles;
+    const stepList = [
+      {
+        content: (
+          <View>
+            <PersonalInfo />
+          </View>
+        ),
+      },
+      {
+        content: (
+          <View>
+            <CredentialsInfo />
+          </View>
+        ),
+      },
+      {
+        content: (
+          <View>
+            <ClassInfo />
+          </View>
+        ),
+      },
+    ];
+    const {currentStep} = this.state;
     return (
       <View style={{...styles.container, backgroundColor: '#01579B'}}>
-        <TextInput
-          value={this.state.username}
-          onChangeText={username => this.setState({username})}
-          placeholder={'Email'}
-          style={styles.input}
-          placeholderTextColor="white"
+        <Wizard
+          nextStepAnimation="slideRight"
+          prevStepAnimation="slideLeft"
+          activeStep={currentStep}
+          ref={this.wizard}
+          steps={stepList}
         />
 
-        <TextInput
-          value={this.state.email}
-          onChangeText={email => this.setState({email})}
-          placeholder={'Username'}
-          style={styles.input}
-          placeholderTextColor="white"
-        />
-        <TextInput
-          value={this.state.password}
-          onChangeText={password => this.setState({password})}
-          placeholder={'Password'}
-          secureTextEntry={true}
-          style={styles.input}
-          placeholderTextColor="white"
-        />
-
-        <TextInput
-          value={this.state.cpassword}
-          onChangeText={cpassword => this.setState({cpassword})}
-          placeholder={'Confirm Password'}
-          secureTextEntry={true}
-          style={styles.input}
-          placeholderTextColor="white"
-        />
-        <TextInput
-          value={this.state.classId}
-          onChangeText={classId => this.setState({classId})}
-          placeholder={'Class Id'}
-          style={styles.input}
-          placeholderTextColor="white"
-        />
-
-        <TouchableOpacity
-          onPress={this.onSignUp}
-          style={{
-            backgroundColor: '#00838F',
-            width: '80%',
-            alignItems: 'center',
-            padding: 12,
-            marginTop: 20,
-          }}>
-          <Text style={{color: 'white', fontSize: 16}}>
-            Send Invitaion to your teacher
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={this.goBack} style={{marginTop: 20}}>
-          <Text
-            style={{
-              color: 'white',
-              fontSize: 16,
-            }}>
-            Go Back to Sign In
-          </Text>
-        </TouchableOpacity>
+        <View style={{display: 'flex', flexDirection: 'row'}}>
+          <PlainButton onPress={() => this.wizard.current.prev()} text="Prev" />
+          <PlainButton
+            onPress={() => this.wizard.current.next()}
+            text="Next"
+            style={{marginLeft: 10}}
+          />
+        </View>
       </View>
     );
   }

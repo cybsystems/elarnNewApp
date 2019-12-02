@@ -1,4 +1,6 @@
 import {StyleSheet} from 'react-native';
+import {showMessage} from 'react-native-flash-message';
+import {baseUrl} from '../utils';
 export const slides = [
   {
     key: 'somethun',
@@ -67,3 +69,50 @@ export const tourStyles = StyleSheet.create({
     color: 'white',
   },
 });
+
+export const sendInvitation = async obj => {
+  try {
+    const {email, username, password, classId} = obj.state;
+    let formData = new FormData();
+    formData.append('email', email);
+    formData.append('username', username);
+    formData.append('password', password);
+    formData.append('classId', classId);
+
+    const res = await fetch(`${baseUrl}/addStudentInvitation.php`, {
+      body: formData,
+      method: 'post',
+    })
+      .then(res => res.json())
+      .then(res => res);
+    if (res && res.res === 'Y') {
+      obj.setState({
+        email: '',
+        username: '',
+        password: '',
+        cpassword: '',
+        classId: '',
+      });
+
+      showMessage({
+        message: 'Invitation Sent',
+        type: 'success',
+      });
+      obj.goBack();
+    }
+  } catch (e) {
+    console.warn(e);
+  }
+};
+
+export const stateFieldProps = {
+  fullName: {placeholder: 'Enter Full Name'},
+  mobNo: {placeholder: 'Mobile Number'},
+  address: {placeholder: 'Enter Address'},
+  city: {placeholder: 'Enter City'},
+  email: {placeholder: 'Enter Email'},
+  username: {placeholder: 'Enter Username'},
+  password: {placeholder: 'Enter Password'},
+  cpassword: {placeholder: 'Confirm Password'},
+  classId: {placeholder: 'Enter Class Id'},
+};
