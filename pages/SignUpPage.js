@@ -2,15 +2,15 @@ import React, { Component } from "react";
 
 import { View, BackHandler, KeyboardAvoidingView } from "react-native";
 import { updateRawData } from "../redux/actions";
-import { loginStyles } from "./styles/loginStyles";
 import Wizard from "react-native-wizard";
 import PlainButton from "../components/PlainButton";
 import PersonalInfo from "./signUpSteps/PersonalInfo";
 import CredentialsInfo from "./signUpSteps/CredentialsInfo";
 import ClassInfo from "./signUpSteps/ClassInfo";
 import { Content, Footer } from "native-base";
+
 export default class SignUpPage extends Component {
-  state = { currentStep: 0 };
+  state = { hideButton: "Prev" };
   constructor() {
     super();
     this.wizard = React.createRef();
@@ -39,7 +39,6 @@ export default class SignUpPage extends Component {
   onSignUp = async () => {};
 
   render() {
-    const styles = loginStyles;
     const stepList = [
       {
         content: <PersonalInfo />,
@@ -48,11 +47,10 @@ export default class SignUpPage extends Component {
         content: <CredentialsInfo />,
       },
       {
-        content: <PersonalInfo />,
+        content: <ClassInfo />,
       },
     ];
-    const { currentStep } = this.state;
-
+    const { hideButton } = this.state;
     return (
       <KeyboardAvoidingView
         style={{ flex: 1, backgroundColor: "#01579B" }}
@@ -63,9 +61,20 @@ export default class SignUpPage extends Component {
           <Wizard
             nextStepAnimation="slideRight"
             prevStepAnimation="slideLeft"
-            activeStep={currentStep}
+            activeStep={0}
             ref={this.wizard}
             steps={stepList}
+            currentStep={({ currentStep, isLastStep, isFirstStep }) => {
+              if (isFirstStep) {
+                this.setState({ hideButton: "Prev" });
+                return;
+              }
+              if (isLastStep) {
+                this.setState({ hideButton: "ShowSubmit" });
+                return;
+              }
+              this.setState({ hideButton: " " });
+            }}
           />
         </Content>
 
@@ -77,12 +86,24 @@ export default class SignUpPage extends Component {
             marginBottom: 10,
           }}
         >
-          <PlainButton onPress={() => this.wizard.current.prev()} text="Prev" />
-          <PlainButton
-            onPress={() => this.wizard.current.next()}
-            text="Next"
-            style={{ marginLeft: 10 }}
-          />
+          {hideButton !== "Prev" &&
+            <PlainButton
+              onPress={() => this.wizard.current.prev()}
+              text="Prev"
+            />}
+          {hideButton !== "Next" &&
+            hideButton !== "ShowSubmit" &&
+            <PlainButton
+              onPress={() => this.wizard.current.next()}
+              text="Next"
+              style={{ marginLeft: 10 }}
+            />}
+          {hideButton === "ShowSubmit" &&
+            <PlainButton
+              onPress={() => this.wizard.current.next()}
+              text="Send Invitation"
+              style={{ marginLeft: 10 }}
+            />}
         </Footer>
       </KeyboardAvoidingView>
     );

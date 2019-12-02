@@ -7,8 +7,8 @@ export default class CredentialsInfo extends Component {
   render() {
     const formItems = {
       userName: { label: "Username" },
-      cpassword: { label: "Confirm Password" },
       password: { label: "Password" },
+      cpassword: { label: "Confirm Password" },
     };
 
     return (
