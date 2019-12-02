@@ -58,53 +58,8 @@ export default class SignUpPage extends Component {
         enabled
       >
         <Content style={{ flex: 1, marginLeft: 40 }}>
-          <Wizard
-            nextStepAnimation="slideRight"
-            prevStepAnimation="slideLeft"
-            activeStep={0}
-            ref={this.wizard}
-            steps={stepList}
-            currentStep={({ currentStep, isLastStep, isFirstStep }) => {
-              if (isFirstStep) {
-                this.setState({ hideButton: "Prev" });
-                return;
-              }
-              if (isLastStep) {
-                this.setState({ hideButton: "ShowSubmit" });
-                return;
-              }
-              this.setState({ hideButton: " " });
-            }}
-          />
+          <PersonalInfo />
         </Content>
-
-        <Footer
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            backgroundColor: "transperant",
-            marginBottom: 10,
-          }}
-        >
-          {hideButton !== "Prev" &&
-            <PlainButton
-              onPress={() => this.wizard.current.prev()}
-              text="Prev"
-            />}
-          {hideButton !== "Next" &&
-            hideButton !== "ShowSubmit" &&
-            <PlainButton
-              onPress={() => this.wizard.current.next()}
-              text="Next"
-              style={{ marginLeft: 10 }}
-            />}
-          {hideButton === "ShowSubmit" &&
-            <PlainButton
-              onPress={() => this.wizard.current.next()}
-              text="Send Invitation"
-              style={{ marginLeft: 10 }}
-            />}
-        </Footer>
       </KeyboardAvoidingView>
     );
   }
