@@ -43,7 +43,9 @@ export default class SignUpPage extends Component {
   }
   isAllRight = () => {
     const arr = ['email', 'username', 'password', 'classId'];
-    const items = Object.keys(this.state).filter(item => this.state[item]);
+    const items = Object.keys(this.state).filter(item => {
+      return this.state[item] && this.state[item].length;
+    });
     return items.length === arr.length;
   };
 
