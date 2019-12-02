@@ -5,7 +5,6 @@ import {slides, tourStyles} from './utils';
 import TourSlide from '../components/TourSlide';
 
 import {updateRawData} from '../redux/actions';
-import AsyncStorage from '@react-native-community/async-storage';
 import {storeData, getData} from '../storage';
 
 export default class TourPage extends Component {

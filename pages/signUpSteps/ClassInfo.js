@@ -5,7 +5,7 @@ export default class ClassInfo extends Component {
   render() {
     return (
       <View>
-        <Text> ClassInfo </Text>
+        <Text> ClassInfo  </Text>
       </View>
     );
   }

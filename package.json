@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.6.3",
+    "deprecated-react-native-listview": "0.0.6",
     "lodash": "^4.17.15",
+    "native-base": "^2.13.8",
     "react": "16.9.0",
     "react-native": "0.61.4",
     "react-native-app-intro-slider": "^3.0.0",
