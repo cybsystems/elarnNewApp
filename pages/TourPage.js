@@ -12,9 +12,15 @@ export default class TourPage extends Component {
   componentDidMount = async () => {
     try {
       const value = await getData('@INTRO_SHOWN');
-
+      const isInvitationSent=await getData('@INVITATION_SENT');
       if (value) {
+        if(isInvitationSent)
+        {
+        this.props.navigation.navigate('HomeScreen');
+        }
+        else{
         this.props.navigation.navigate('Login');
+        }
         return;
       }
     } catch (e) {

@@ -13,7 +13,11 @@ export default class CustomForm extends Component {
               <Label style={style.label}>
                 {label}
               </Label>
-              <Input keyboardType={keyboardType} style={style.input} />
+              <Input
+                onChangeText={txt => this.props.onFormChange(txt, formItem)}
+                keyboardType={keyboardType}
+                style={style.input}
+              />
             </Item>
           );
         })}
