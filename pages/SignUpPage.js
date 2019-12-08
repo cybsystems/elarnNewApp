@@ -9,6 +9,8 @@ import { baseUrl } from "../utils";
 import { showMessage } from "react-native-flash-message";
 import { storeData } from "../storage";
 
+const backgrundColor = "#007366";
+
 const formItems = {
   fullName: { label: "Full  Name" },
   email: { label: "Email", keyboardType: "email-address" },
@@ -23,7 +25,7 @@ export default class SignUpPage extends Component {
   }
 
   componentDidMount() {
-    updateRawData({ statusBarColor: "#01579B" });
+    updateRawData({ statusBarColor: backgrundColor });
     this.backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       this.handleBackPress
@@ -61,30 +63,48 @@ export default class SignUpPage extends Component {
   };
 
   onSignUp = async () => {
-    const { fullName, email, classId } = this.store;
-    let formData = new FormData();
-    formData.append("full_name", fullName);
-    formData.append("email", email);
-    formData.append("classId", classId);
-    const res = await fetch(`${baseUrl}/addStudentInvitation.php`, {
-      body: formData,
-      method: "post",
-    })
-      .then(res => res.json())
-      .then(res => res);
-    if (res && res.res === "Y") {
-      showMessage({
-        message: "Invitation Sent",
-        type: "success",
-      });
-      await storeData({ "@INVITATION_SENT": "true" });
-      this.props.navigation.navigate("HomeScreen");
+    try {
+      const { fullName, email, classId } = this.store;
+      let formData = new FormData();
+      formData.append("full_name", fullName);
+      formData.append("email", email);
+      formData.append("classId", classId);
+      const res = await fetch(`${baseUrl}/addStudentInvitation.php`, {
+        body: formData,
+        method: "post",
+      })
+        .then(res => res.json())
+        .then(res => res);
+
+      if (res && res.res === "Y") {
+        showMessage({
+          message: "Invitation Sent",
+          type: "success",
+        });
+        await storeData({ "@INVITATION_SENT": "true" });
+        this.props.navigation.navigate("HomeScreen");
+      }
+    } catch (err) {
+      console.warn(err);
     }
   };
 
   render() {
     return (
-      <KeyboardAvoidingView style={{ flex: 1, backgroundColor: "#01579B" }}>
+      <KeyboardAvoidingView
+        style={{ flex: 1, backgroundColor: backgrundColor }}
+      >
+        <Text
+          style={{
+            alignSelf: "center",
+            fontSize: 22,
+            color: "white",
+            marginTop: 50,
+          }}
+        >
+          SIGN UP
+        </Text>
+
         <Content style={{ flex: 1, marginLeft: 40, marginTop: 50 }}>
           <CustomForm
             onFormChange={this.onFormChange}

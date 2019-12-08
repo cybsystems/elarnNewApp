@@ -31,28 +31,9 @@ export default class HomePage extends Component {
   }
   render() {
     return (
-      <Container style={{ height: "100%", backgroundColor: "#2663a6" }}>
+      <Container style={{ height: "100%" }}>
         <Content>
-          <Card
-            style={{
-              padding: 10,
-
-              alignSelf: "center",
-              marginTop: 220,
-            }}
-          >
-            <CardItem header style={{ alignSelf: "center" }} />
-            <CardItem
-              style={{ alignSelf: "center" }}
-              button
-              onPress={() => removeData("@INVITATION_SENT")}
-            >
-              <Body>
-                <Text style={{ fontSize: 30 }}>Invitation Pending</Text>
-              </Body>
-            </CardItem>
-            <CardItem footer style={{ alignSelf: "center" }} />
-          </Card>
+          <Text>Home Page</Text>
         </Content>
       </Container>
     );
