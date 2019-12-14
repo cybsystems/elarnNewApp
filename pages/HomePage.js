@@ -8,7 +8,7 @@ import {
   Button,
   Text,
 } from "native-base";
-import { BackHandler } from "react-native";
+import { BackHandler, NativeModules } from "react-native";
 import { updateRawData } from "../redux/actions";
 import { removeData } from "../storage";
 
@@ -34,6 +34,15 @@ export default class HomePage extends Component {
       <Container style={{ height: "100%" }}>
         <Content>
           <Text>Home Page</Text>
+
+          <Button
+            style={{ alignContent: "center" }}
+            onPress={() =>{ 
+              NativeModules.MyModule.navigateToNative();
+             }}
+          >
+            <Text style={{ alignSelf: "center" }}>Start Video</Text>
+          </Button>
         </Content>
       </Container>
     );
