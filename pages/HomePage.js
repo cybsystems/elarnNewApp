@@ -38,7 +38,7 @@ export default class HomePage extends Component {
           <Button
             style={{ alignContent: "center" }}
             onPress={() =>{ 
-              NativeModules.MyModule.navigateToNative();
+              NativeModules.MyModule.navigateToNative("http://techslides.com/demos/sample-videos/small.mp4");
              }}
           >
             <Text style={{ alignSelf: "center" }}>Start Video</Text>
