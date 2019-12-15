@@ -6,15 +6,22 @@ import {
   CardItem,
   Container,
   Button,
+  Header,
   Text,
+  Left,
+  Icon,
+  Item,
+  Input
 } from "native-base";
 import { BackHandler, NativeModules } from "react-native";
 import { updateRawData } from "../redux/actions";
 import { removeData } from "../storage";
+import DeckSwiperAdvancedExample from "../components/DeckSwiperAdvancedExample";
+import RecentVideosAndNotes from "../components/RecentVideosAndNotes";
 
 export default class HomePage extends Component {
   componentDidMount() {
-    updateRawData({ statusBarColor: "#2663a6" });
+    updateRawData({ statusBarColor: "#7e30b0" });
     this.backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       this.handleBackPress
@@ -30,19 +37,27 @@ export default class HomePage extends Component {
     this.backHandler.remove();
   }
   render() {
+    const images = [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQeBrVatyKI8ResAGGreQg-iA46KWSuk0ps1MmzRWYbcwxpvPQx",
+      ,
+      "https://adanimate.com/wp-content/uploads/2018/03/ei003-1000x783.jpg"
+    ];
     return (
-      <Container style={{ height: "100%" }}>
-        <Content>
-          <Text>Home Page</Text>
+      <Container>
+        <Header searchBar>
+          <Left>
+            <Button
+              transparent
+              onPress={() => this.props.navigation.navigate("Recommended")}
+            />
+          </Left>
+          <Item>
+            <Input placeholder={"Search Anything"} />
+          </Item>
+        </Header>
 
-          <Button
-            style={{ alignContent: "center" }}
-            onPress={() =>{ 
-              NativeModules.MyModule.navigateToNative("http://techslides.com/demos/sample-videos/small.mp4");
-             }}
-          >
-            <Text style={{ alignSelf: "center" }}>Start Video</Text>
-          </Button>
+        <Content>
+          <RecentVideosAndNotes images={images} />
         </Content>
       </Container>
     );
